@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>참여하기 | 귤귤</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="participate">
+  <header class="site-header compact">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤</span></a>
+      <nav class="site-nav">
+        <a href="programs.html" data-page="programs">프로그램</a>
+        <a href="participate.html" data-page="participate">참여하기</a>
+        <a href="partners.html" data-page="partners">팀</a>
+        <a href="about.html" data-page="about">귤귤</a>
+        <a href="support.html" data-page="support">안내</a>
+      </nav>
+      <button class="menu-toggle" type="button">☰</button>
+    </div>
+  </header>
+
+  <main class="app-shell container">
+    <section class="page-hero hero">
+      <div class="editorial-hero-grid">
+        <div>
+          <span class="eyebrow">PARTICIPATE</span>
+          <h1>신청하고,<br />내 일정까지 바로 확인</h1>
+          <p class="section-copy">업로드된 프로토타입의 핵심 기능을 현재 UI에 맞춰 녹여 넣었습니다. 참여자 정보 저장, 폼 제출, 내 제출 내역, 달력 보기, ICS 저장까지 한 화면에서 확인할 수 있습니다.</p>
+        </div>
+        <div class="image-frame section-side-frame tall"></div>
+      </div>
+    </section>
+
+    <div id="status" class="status">불러오는 중...</div>
+
+    <div class="viewer-hero">
+      <div class="card">
+        <div class="card-head">
+          <h2>내 정보</h2>
+          <p>같은 참여자 식별값으로 제출한 내역과 일정을 묶어서 보여줍니다.</p>
+        </div>
+        <div class="card-body grid">
+          <div class="grid-2">
+            <div class="field">
+              <label>참여자 식별값</label>
+              <input id="viewerKey" class="input" placeholder="예: hong_01012345678" />
+            </div>
+            <div class="field">
+              <label>이름</label>
+              <input id="viewerName" class="input" placeholder="이름" />
+            </div>
+          </div>
+          <div class="field">
+            <label>연락처</label>
+            <input id="viewerPhone" class="input" placeholder="전화번호" />
+          </div>
+          <div class="row"><button id="btnSaveProfile" class="btn btn-primary">내 정보 저장</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>요약</h2>
+          <p>현재 참여 가능 상태와 내 제출 현황</p>
+        </div>
+        <div class="card-body">
+          <div class="stats">
+            <div class="stat"><div class="k">OPEN FORMS</div><div class="v" id="statOpenForms">0</div></div>
+            <div class="stat"><div class="k">MY SUBMISSIONS</div><div class="v" id="statMyForms">0</div></div>
+            <div class="stat"><div class="k">MY EVENTS</div><div class="v" id="statMyEvents">0</div></div>
+            <div class="stat"><div class="k">SELECTED</div><div class="v" id="statSelectedForm">-</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-head">
+        <h2>참여 가능한 신청 폼</h2>
+        <p>공개된 폼 중 제출 가능한 것과 마감된 것을 구분해서 표시합니다.</p>
+      </div>
+      <div class="card-body"><div id="formList" class="form-list"></div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>신청서 작성</h2>
+          <p>질문별 응답 후 제출</p>
+        </div>
+        <div class="card-body"><div id="formRenderArea" class="grid"><div class="empty">왼쪽에서 제출할 신청 폼을 선택해줘</div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>내 제출 내역</h2>
+          <p>내 식별값으로 제출한 폼만 표시됩니다.</p>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>신청폼</th><th>제출 시각</th><th>선택 일정</th></tr></thead>
+              <tbody id="mySubmissionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="card-head">
+        <h2>내 일정 달력</h2>
+        <p>행사 시작 시간이 들어간 선택지만 달력과 일정 카드로 표시됩니다.</p>
+      </div>
+      <div class="card-body calendar-shell">
+        <div class="grid">
+          <div class="row" style="justify-content:space-between">
+            <button id="btnPrevMonth" class="btn btn-outline">이전 달</button>
+            <div id="calendarTitle" style="font-size:18px;font-weight:700"></div>
+            <button id="btnNextMonth" class="btn btn-outline">다음 달</button>
+          </div>
+          <div id="eventList" class="grid"></div>
+        </div>
+        <div><div id="calendarGrid" class="month-grid"></div></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/site-app.js"></script>
+  <script type="module" src="js/viewer.js"></script>
+</body>
+</html>

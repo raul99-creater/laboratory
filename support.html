@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>안내 | 귤귤</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="support">
+  <header class="site-header compact">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤</span></a>
+      <nav class="site-nav">
+        <a href="programs.html" data-page="programs">프로그램</a>
+        <a href="participate.html" data-page="participate">참여하기</a>
+        <a href="partners.html" data-page="partners">팀</a>
+        <a href="about.html" data-page="about">귤귤</a>
+        <a href="support.html" data-page="support">안내</a>
+      </nav>
+      <button class="menu-toggle" type="button">☰</button>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero hero">
+      <div class="container editorial-hero-grid">
+        <div>
+          <span class="eyebrow">SUPPORT</span>
+          <h1>안내와 FAQ</h1>
+          <p class="section-copy">문의 채널, 운영 시간, 현재 버전의 동작 방식을 빠르게 확인할 수 있게 정리했습니다.</p>
+        </div>
+        <div class="image-frame section-side-frame tall"></div>
+      </div>
+    </section>
+
+    <section class="section no-top-gap">
+      <div class="container support-grid">
+        <article class="support-card">
+          <span class="eyebrow">CONTACT</span>
+          <h2 style="margin:16px 0 10px;font-size:22px">문의 정보</h2>
+          <div class="grid top-space">
+            <div class="info-card"><strong>운영 시간</strong><p id="supportHours"></p></div>
+            <div class="info-card"><strong>이메일</strong><p id="supportEmail"></p></div>
+            <div class="info-card"><strong>채널</strong><p id="supportChannel"></p></div>
+          </div>
+          <div class="note-box top-space">현재 버전은 GitHub Pages에서 먼저 확인한 뒤 Supabase를 연결하는 구조라, 연락처와 정책 문구는 운영 전 최종값으로 교체하면 됩니다.</div>
+        </article>
+        <article class="support-card">
+          <span class="eyebrow">FAQ</span>
+          <h2 style="margin:16px 0 10px;font-size:22px">자주 묻는 질문</h2>
+          <div id="supportFaqList" class="faq-list top-space"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/site-app.js"></script>
+</body>
+</html>

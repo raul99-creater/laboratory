@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>귤귤 | 프로젝트와 참여를 잇는 허브</title>
+  <meta name="description" content="귤귤은 프로젝트 소개, 신청 폼, 일정 확인을 한 곳에 모아두는 GitHub Pages용 정적 허브 시안입니다." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">귤귤</span>
+      </a>
+      <nav class="site-nav">
+        <a href="programs.html" data-page="programs">프로그램</a>
+        <a href="participate.html" data-page="participate">참여하기</a>
+        <a href="partners.html" data-page="partners">팀</a>
+        <a href="about.html" data-page="about">귤귤</a>
+        <a href="support.html" data-page="support">안내</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-primary" href="participate.html">참여 페이지</a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="메뉴 열기">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">GYULGYUL HUB</span>
+          <h1>프로젝트 소개부터<br />신청, 일정 확인까지<br />한 흐름으로 정리한 귤귤</h1>
+          <p class="hero-copy">다양한 모집과 행사 정보를 자연스럽게 보여주는 허브형 구조로 다시 정리했습니다.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="programs.html">열려 있는 프로그램 보기</a>
+            <a class="btn btn-secondary" href="participate.html">바로 신청/확인</a>
+          </div>
+          <div id="heroStats" class="hero-stat-grid"></div>
+        </div>
+        <div>
+          <div class="image-frame hero-main-frame"></div>
+          <div class="hero-floating-row">
+            <div class="image-frame floating-frame small"></div>
+            <div class="image-frame floating-frame"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-divider">
+      <div class="container split-layout">
+        <div>
+          <span class="eyebrow">STRUCTURE</span>
+          <h2>브랜드 소개와 참여 기능이 분리되지 않는 랜딩 구조</h2>
+          <p class="section-copy">첫 화면에서는 귤귤의 무드와 현재 열려 있는 프로그램을 동시에 보여주고, 아래에서는 바로 신청 폼과 팀 정보를 이어서 확인할 수 있도록 설계했습니다.</p>
+          <a class="text-link" href="about.html">자세히 보기 →</a>
+        </div>
+        <div class="image-frame section-side-frame"></div>
+      </div>
+    </section>
+
+    <section class="section soft-bg">
+      <div class="container">
+        <div class="section-head centered">
+          <span class="eyebrow">OPEN NOW</span>
+          <h2>지금 바로 신청 가능한 프로그램</h2>
+        </div>
+        <div id="featuredPrograms" class="program-grid"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split-layout">
+        <div class="image-frame wide-frame"></div>
+        <div>
+          <span class="eyebrow">FLOW</span>
+          <h2>참여 흐름은 더 단순하게</h2>
+          <p class="section-copy">프로그램 상세 안내 → 신청 폼 선택 → 내 일정 달력 확인까지 한 페이지에서 처리할 수 있게 구성했습니다. 선택지마다 행사 시작 시간과 정원을 따로 둘 수 있어 실제 운영 테스트에도 적합합니다.</p>
+          <div class="hero-mini-grid">
+            <article class="mini-panel"><strong>01</strong><span>운영 페이지에서 프로그램 등록</span></article>
+            <article class="mini-panel"><strong>02</strong><span>참여 페이지에서 제출</span></article>
+            <article class="mini-panel"><strong>03</strong><span>내 일정 달력과 ICS 저장</span></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-bg">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">OPENINGS</span>
+            <h2>전체 오픈 항목</h2>
+          </div>
+          <a class="text-link" href="programs.html">목록 전체 보기 →</a>
+        </div>
+        <div id="homeOpenings" class="grid"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">TEAM</span>
+            <h2>귤귤과 함께 움직이는 팀</h2>
+          </div>
+          <a class="text-link" href="partners.html">팀 전체 보기 →</a>
+        </div>
+        <div id="homePartnerList" class="partner-grid"></div>
+      </div>
+    </section>
+
+    <section class="section soft-bg no-top-gap">
+      <div class="container split-panel">
+        <div>
+          <span class="eyebrow">FAQ</span>
+          <h2>자주 묻는 질문</h2>
+          <p class="muted">GitHub Pages에서 먼저 검수하고, Supabase를 연결하면 참여 내역과 운영 구성이 같은 서버 데이터를 읽습니다.</p>
+        </div>
+        <div id="faqList" class="faq-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>귤귤</strong>
+        <p>정적 허브 구조 검토용 GitHub Pages 시안</p>
+      </div>
+      <div class="footer-links">
+        <a href="programs.html">프로그램</a>
+        <a href="participate.html">참여하기</a>
+        <a href="partners.html">팀</a>
+        <a href="support.html">안내</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/site-app.js"></script>
+</body>
+</html>

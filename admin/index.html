@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>귤귤 어드민</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="admin">
+  <header class="site-header compact">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤 어드민</span></a>
+      <nav class="site-nav">
+        <a href="index.html" class="active">대시보드</a>
+      </nav>
+      <button class="menu-toggle" type="button">☰</button>
+    </div>
+  </header>
+
+  <main class="app-shell container">
+    <section class="page-hero hero">
+      <div class="editorial-hero-grid">
+        <div>
+          <span class="eyebrow">ADMIN · GITHUB + SUPABASE</span>
+          <h1>프로그램과 신청 흐름을<br />관리하는 분리형 어드민</h1>
+          <p class="section-copy">GitHub Pages에 올려도 바로 검수할 수 있고, Supabase를 연결하면 같은 UI 그대로 실데이터를 다루는 구조입니다. 기본 편집은 로컬에서 하고, 확인 후 Supabase로 업로드하면 메인 사이트에 반영됩니다.</p>
+        </div>
+        <div class="image-frame section-side-frame tall"></div>
+      </div>
+    </section>
+
+    <div id="status" class="status">준비 완료</div>
+
+    <div class="card auth-card" style="margin:18px 0">
+      <div class="card-head"><h2>Supabase 연결</h2><p>관리자 로그인 후 서버와 동기화합니다.</p></div>
+      <div class="card-body stack">
+        <div class="grid-2 auth-grid">
+          <div class="field"><label>이메일</label><input id="authEmail" class="input" placeholder="admin@example.com" /></div>
+          <div class="field"><label>비밀번호</label><input id="authPassword" class="input" type="password" placeholder="비밀번호" /></div>
+        </div>
+        <div class="row auth-actions">
+          <button id="btnSignUp" class="btn btn-outline">회원가입</button>
+          <button id="btnLogin" class="btn btn-primary">로그인</button>
+          <button id="btnLogout" class="btn btn-soft">로그아웃</button>
+        </div>
+        <div class="auth-note">
+          <div><strong>현재 모드</strong> <span id="authMode">local</span></div>
+          <div><strong>현재 계정</strong> <span id="authUser">-</span></div>
+          <div><strong>권한 상태</strong> <span id="authRole">로컬 모드</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" style="margin-bottom:18px">
+      <div class="stat"><div class="k">PROGRAMS</div><div class="v" id="statLectures">0</div></div>
+      <div class="stat"><div class="k">FORMS</div><div class="v" id="statForms">0</div></div>
+      <div class="stat"><div class="k">QUESTIONS</div><div class="v" id="statQuestions">0</div></div>
+      <div class="stat"><div class="k">OPTIONS</div><div class="v" id="statOptions">0</div></div>
+      <div class="stat"><div class="k">SUBMISSIONS</div><div class="v" id="statSubmissions">0</div></div>
+      <div class="stat"><div class="k">STORAGE</div><div class="v" id="statStorage">local</div></div>
+    </div>
+
+    <div class="admin-layout">
+      <div class="sidebar">
+        <div class="card">
+          <div class="card-head"><h2>프로그램 등록</h2><p>신청 폼을 묶을 기본 프로그램을 먼저 만든다</p></div>
+          <div class="card-body stack">
+            <div class="field"><label>프로그램명</label><input id="lectureName" class="input" placeholder="예: 귤귤 오픈하우스" /></div>
+            <div class="field"><label>설명</label><textarea id="lectureDesc" class="textarea" placeholder="프로그램 설명"></textarea></div>
+            <button id="btnCreateLecture" class="btn btn-primary">프로그램 등록</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>신청 폼 등록</h2><p>프로그램별로 여러 신청 폼을 둘 수 있음</p></div>
+          <div class="card-body stack">
+            <div class="field"><label>프로그램 선택</label><select id="newFormLectureId" class="select"></select></div>
+            <div class="field"><label>폼 제목</label><input id="newFormTitle" class="input" placeholder="예: 4월 오픈하우스 신청" /></div>
+            <div class="field"><label>폼 설명</label><textarea id="newFormDesc" class="textarea" placeholder="안내 문구"></textarea></div>
+            <div class="grid-2">
+              <div class="field"><label>전체 마감 시각</label><input id="newFormDeadline" class="input" type="datetime-local" /></div>
+              <div class="field"><label>전체 최대 제출 수</label><input id="newFormCapacity" class="input" type="number" placeholder="비우면 무제한" /></div>
+            </div>
+            <button id="btnCreateForm" class="btn btn-dark">신청 폼 생성</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>데이터</h2><p>JSON 백업/복원</p></div>
+          <div class="card-body stack">
+            <button id="btnExport" class="btn btn-outline">JSON 내보내기</button>
+            <button id="btnPushSupabase" class="btn btn-primary">Supabase에 업로드</button>
+            <button id="btnPullSupabase" class="btn btn-soft">Supabase에서 다시 불러오기</button>
+            <div class="field"><label>JSON 붙여넣기 복원</label><textarea id="importJson" class="textarea" placeholder='{"lectures":[], ...}'></textarea></div>
+            <button id="btnImport" class="btn btn-primary">복원 적용</button>
+            <button id="btnResetAll" class="btn btn-danger">기본 샘플로 복원</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="card">
+          <div class="card-head"><h2>폼 빌더</h2><p>질문을 추가하고, 선택지마다 행사시간·마감시각·정원을 설정할 수 있습니다.</p></div>
+          <div class="card-body builder-shell">
+            <div class="stack">
+              <div class="section-title">프로그램별 신청 폼 목록</div>
+              <div id="formList" class="stack"></div>
+            </div>
+            <div id="builderArea"><div class="empty">왼쪽에서 신청 폼을 선택해줘</div></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h2>프로그램 목록</h2><p>현재 등록된 프로그램</p></div>
+            <div class="card-body"><div class="table-wrap"><table><thead><tr><th>프로그램명</th><th>설명</th><th>관리</th></tr></thead><tbody id="lectureTableBody"></tbody></table></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>제출 현황</h2><p>각 폼별 최근 제출 내역</p></div>
+            <div class="card-body"><div class="table-wrap"><table><thead><tr><th>폼</th><th>참여자</th><th>제출 시각</th><th>선택 일정</th></tr></thead><tbody id="submissionTableBody"></tbody></table></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/site-app.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

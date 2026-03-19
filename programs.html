@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로그램 | 귤귤</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="programs">
+  <header class="site-header compact">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤</span></a>
+      <nav class="site-nav">
+        <a href="programs.html" data-page="programs">프로그램</a>
+        <a href="participate.html" data-page="participate">참여하기</a>
+        <a href="partners.html" data-page="partners">팀</a>
+        <a href="about.html" data-page="about">귤귤</a>
+        <a href="support.html" data-page="support">안내</a>
+      </nav>
+      <button class="menu-toggle" type="button">☰</button>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero hero">
+      <div class="container editorial-hero-grid">
+        <div>
+          <span class="eyebrow">PROGRAMS</span>
+          <h1>프로그램과 모집</h1>
+          <p class="section-copy">교육상품 느낌 대신, 프로젝트·행사·참여 안내 중심으로 재구성했습니다. 각 카드에서 바로 참여 페이지로 이동할 수 있습니다.</p>
+        </div>
+        <div class="image-frame section-side-frame tall"></div>
+      </div>
+    </section>
+
+    <section class="section no-top-gap">
+      <div class="container">
+        <div id="programFilters" class="filter-bar"></div>
+        <div id="programList" class="program-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div><strong>귤귤</strong><p>프로그램/모집 목록</p></div>
+      <div class="footer-links"><a href="index.html">홈</a><a href="participate.html">참여하기</a></div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/site-app.js"></script>
+</body>
+</html>
