@@ -9,40 +9,27 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="participate">
-
 <header class="site-header">
   <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-text">귤귤</span>
-    </a>
-    <nav class="site-nav">
-      <a href="programs.html" data-page="programs">프로그램</a>
-      <a href="participate.html" data-page="participate">참여하기</a>
-      <a href="about.html" data-page="about">소개</a>
-      <a href="support.html" data-page="support">안내</a>
-    </nav>
-    <div class="nav-actions">
-      <a class="btn btn-primary" href="participate.html">참여 페이지</a>
-    </div>
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤</span></a>
+    <nav class="site-nav"><a href="programs.html" data-page="programs">프로그램</a><a href="participate.html" data-page="participate">참여하기</a><a href="about.html" data-page="about">소개</a><a href="support.html" data-page="support">안내</a></nav>
+    <div class="nav-actions"><a class="btn btn-primary" href="participate.html">참여 페이지</a></div>
     <button class="menu-toggle" type="button" aria-label="메뉴 열기">☰</button>
   </div>
 </header>
-
+<div id="modeBanner" class="mode-banner hidden"></div>
 <main class="app-shell container">
   <section class="page-hero hero">
     <div class="viewer-hero">
       <div>
         <span class="eyebrow">PARTICIPATE</span>
-        <h1>공개된 신청 폼을 고르고<br />바로 제출 테스트</h1>
-        <p class="section-copy">선택지별 마감과 정원, 행사 시작/종료 시각을 읽어서 참여 페이지에 반영한다. 제출이 끝나면 캘린더 링크와 ICS 파일 저장 버튼도 나온다.</p>
+        <h1>샘플이든 실데이터든<br />같은 UI로 바로 신청까지 확인</h1>
+        <p class="section-copy">왼쪽에서 폼을 고르고, 오른쪽에서 질문을 답하고, 제출이 끝나면 일정 링크와 ICS 파일까지 바로 확인할 수 있다.</p>
       </div>
       <div class="image-frame section-side-frame tall"></div>
     </div>
   </section>
-
-  <div id="status" class="status">Supabase 연결 확인 중...</div>
-
+  <div id="status" class="status">데이터 연결 확인 중...</div>
   <div class="admin-grid" style="grid-template-columns:360px minmax(0,1fr)">
     <aside class="sidebar">
       <div class="card">
@@ -54,39 +41,23 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><h2>공개 폼 목록</h2><p>왼쪽에서 선택하면 오른쪽에 렌더링된다</p></div>
+        <div class="card-head"><h2>공개 폼 목록</h2><p>왼쪽에서 선택하면 오른쪽에 즉시 렌더링</p></div>
         <div class="card-body"><div id="formList" class="stack"></div></div>
       </div>
     </aside>
-
     <section class="main">
       <div class="card">
-        <div class="card-head"><h2>신청서</h2><p>선택된 폼의 질문 구조를 그대로 렌더링한다</p></div>
+        <div class="card-head"><h2>신청서</h2><p>선택된 폼의 질문 구조를 그대로 렌더링</p></div>
         <div class="card-body stack" id="formRenderArea"><div class="empty">왼쪽에서 폼을 선택해줘</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><h2>캘린더</h2><p>제출 뒤 선택된 일정이 있으면 링크를 만든다</p></div>
+        <div class="card-head"><h2>캘린더</h2><p>제출 뒤 선택된 일정이 있으면 바로 저장 가능</p></div>
         <div class="card-body" id="calendarArea"><div class="muted">아직 생성된 일정이 없어</div></div>
       </div>
     </section>
   </div>
 </main>
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div>
-      <strong>귤귤</strong>
-      <p class="footer-note">Supabase 준비용 스타터 · web / admin 분리 구조</p>
-    </div>
-    <div class="footer-links">
-      <a href="programs.html">프로그램</a>
-      <a href="participate.html">참여하기</a>
-      <a href="about.html">소개</a>
-      <a href="support.html">안내</a>
-    </div>
-  </div>
-</footer>
-
+<footer class="site-footer"><div class="container footer-inner"><div><strong>귤귤</strong><p class="footer-note">Supabase UI 스타터 · 데모 모드 포함</p></div><div class="footer-links"><a href="programs.html">프로그램</a><a href="participate.html">참여하기</a><a href="about.html">소개</a><a href="support.html">안내</a></div></div></footer>
 <script type="module" src="js/pages/participate.js"></script>
 </body>
 </html>

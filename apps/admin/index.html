@@ -3,28 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>귤귤 어드민 | Supabase 준비용</title>
+  <title>귤귤 어드민 | UI 스타터</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="admin">
-
-<header class="site-header compact">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤 어드민</span></a>
-    <nav class="site-nav"><a href="index.html" class="active">대시보드</a></nav>
-    <button class="menu-toggle" type="button">☰</button>
-  </div>
-</header>
-
+<header class="site-header compact"><div class="container nav-wrap"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤 어드민</span></a><nav class="site-nav"><a href="index.html" class="active">대시보드</a></nav><button class="menu-toggle" type="button">☰</button></div></header>
+<div id="modeBanner" class="mode-banner hidden"></div>
 <main class="app-shell container">
   <section class="page-hero hero">
     <div class="editorial-hero-grid">
       <div>
         <span class="eyebrow">SUPABASE ADMIN</span>
-        <h1>프로그램 / 폼 / 질문 / 제출을<br />직접 관리하는 어드민</h1>
-        <p class="section-copy">이메일 화이트리스트 + Supabase Auth 기준으로 로그인하고, 공개 사이트가 읽을 데이터들을 여기에서 관리한다.</p>
+        <h1>프로그램 / 폼 / 질문 / 제출을<br />직접 만지고 바로 확인하는 어드민</h1>
+        <p class="section-copy">이번 버전은 로그인 화면만 있는 껍데기가 아니라, 데모 모드에서도 실제로 프로그램 등록, 폼 빌더, 제출 확인이 다 된다. Supabase 키를 넣으면 바로 실운영 모드로 넘어갈 수 있다.</p>
       </div>
       <div class="image-frame section-side-frame tall"></div>
     </div>
@@ -32,16 +25,13 @@
 
   <div id="authView" class="login-shell">
     <div class="card">
-      <div class="card-head"><h2>관리자 로그인</h2><p>화이트리스트에 등록된 이메일만 실제 운영 권한을 가진다</p></div>
+      <div class="card-head"><h2>관리자 로그인</h2><p>Supabase 연결 전에는 데모 계정처럼 바로 들어갈 수 있다</p></div>
       <div class="card-body stack">
         <div id="authStatus" class="status">로그인 전</div>
         <div class="field"><label>이메일</label><input id="authEmail" class="input" placeholder="admin@example.com" /></div>
-        <div class="field"><label>비밀번호</label><input id="authPassword" type="password" class="input" placeholder="8자 이상" /></div>
-        <div class="auth-actions">
-          <button id="btnSignIn" class="btn btn-primary">로그인</button>
-          <button id="btnSignUp" class="btn btn-secondary">회원가입</button>
-        </div>
-        <div class="notice">먼저 `public.admin_emails` 테이블에 관리자 이메일을 넣어두는 걸 잊지 마.</div>
+        <div class="field"><label>비밀번호</label><input id="authPassword" type="password" class="input" placeholder="4자 이상" /></div>
+        <div class="auth-actions"><button id="btnSignIn" class="btn btn-primary">로그인</button><button id="btnSignUp" class="btn btn-secondary">회원가입</button></div>
+        <div class="notice">실데이터 모드에서는 먼저 <span class="mono">public.admin_emails</span> 테이블에 관리자 이메일을 넣어야 한다.</div>
       </div>
     </div>
   </div>
@@ -50,6 +40,14 @@
     <div class="admin-topbar">
       <div class="row"><span class="badge">로그인됨</span><strong id="sessionEmail">-</strong></div>
       <div class="page-actions"><button id="btnRefresh" class="btn btn-outline">새로고침</button><button id="btnSignOut" class="btn btn-danger">로그아웃</button></div>
+    </div>
+
+    <div id="demoTools" class="card hidden" style="margin-bottom:18px">
+      <div class="card-head"><h2>데모 데이터 도구</h2><p>Supabase 연결 전 화면 검수와 테스트용</p></div>
+      <div class="card-body">
+        <div class="page-actions"><button id="btnResetDemo" class="btn btn-secondary">초기 샘플 복원</button><button id="btnExportDemo" class="btn btn-outline">데이터 내보내기</button><button id="btnImportDemo" class="btn btn-soft">데이터 가져오기</button></div>
+        <input id="importDemoInput" type="file" accept="application/json" class="hidden" />
+      </div>
     </div>
 
     <div id="status" class="status">준비 중...</div>
@@ -66,7 +64,7 @@
     <div class="admin-grid">
       <aside class="sidebar">
         <div class="card">
-          <div class="card-head"><h2>프로그램 등록</h2><p>공개 사이트의 기본 카드 단위</p></div>
+          <div class="card-head"><h2>프로그램 등록</h2><p>공개 사이트의 카드 단위</p></div>
           <div class="card-body stack">
             <div class="field"><label>프로그램명</label><input id="programName" class="input" /></div>
             <div class="field"><label>slug</label><input id="programSlug" class="input" placeholder="예: open-house" /></div>
@@ -82,10 +80,7 @@
             <div class="field"><label>프로그램 선택</label><select id="formProgramId" class="select"></select></div>
             <div class="field"><label>폼 제목</label><input id="formTitle" class="input" /></div>
             <div class="field"><label>폼 설명</label><textarea id="formDescription" class="textarea"></textarea></div>
-            <div class="grid-2">
-              <div class="field"><label>전체 마감 시각</label><input id="formDeadline" class="input" type="datetime-local" /></div>
-              <div class="field"><label>전체 정원</label><input id="formCapacity" class="input" type="number" /></div>
-            </div>
+            <div class="grid-2"><div class="field"><label>전체 마감 시각</label><input id="formDeadline" class="input" type="datetime-local" /></div><div class="field"><label>전체 정원</label><input id="formCapacity" class="input" type="number" /></div></div>
             <button id="btnCreateForm" class="btn btn-dark">신청 폼 생성</button>
           </div>
         </div>
@@ -103,35 +98,19 @@
       <section class="main stack">
         <div class="card">
           <div class="card-head"><h2>폼 빌더</h2><p>질문과 선택지 단위 설정</p></div>
-          <div class="card-body builder-shell">
-            <div>
-              <div class="section-title">폼 목록</div>
-              <div id="formList" class="stack top-space"></div>
-            </div>
-            <div id="builderArea"><div class="empty">왼쪽에서 폼을 선택해줘</div></div>
-          </div>
+          <div class="card-body builder-shell"><div><div class="section-title">폼 목록</div><div id="formList" class="stack top-space"></div></div><div id="builderArea"><div class="empty">왼쪽에서 폼을 선택해줘</div></div></div>
         </div>
 
         <div class="two-col">
-          <div class="card">
-            <div class="card-head"><h2>프로그램 목록</h2><p>현재 등록 상태</p></div>
-            <div class="card-body table-wrap"><table><thead><tr><th>프로그램명</th><th>slug</th><th>관리</th></tr></thead><tbody id="programTableBody"></tbody></table></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><h2>최근 제출</h2><p>최신 50건</p></div>
-            <div class="card-body table-wrap"><table><thead><tr><th>폼</th><th>이름</th><th>연락처</th><th>시각</th></tr></thead><tbody id="submissionTableBody"></tbody></table></div>
-          </div>
+          <div class="card"><div class="card-head"><h2>프로그램 목록</h2><p>현재 등록 상태</p></div><div class="card-body table-wrap"><table><thead><tr><th>프로그램명</th><th>slug</th><th>공개</th><th>관리</th></tr></thead><tbody id="programTableBody"></tbody></table></div></div>
+          <div class="card"><div class="card-head"><h2>FAQ 목록</h2><p>홈 / 안내 노출 여부 포함</p></div><div class="card-body table-wrap"><table><thead><tr><th>질문</th><th>공개</th><th>관리</th></tr></thead><tbody id="faqTableBody"></tbody></table></div></div>
         </div>
 
-        <div class="card">
-          <div class="card-head"><h2>FAQ 목록</h2><p>게시 여부 토글 가능</p></div>
-          <div class="card-body table-wrap"><table><thead><tr><th>질문</th><th>게시</th><th>관리</th></tr></thead><tbody id="faqTableBody"></tbody></table></div>
-        </div>
+        <div class="card"><div class="card-head"><h2>최근 제출</h2><p>최근 100건까지 표시</p></div><div class="card-body table-wrap"><table><thead><tr><th>폼</th><th>이름</th><th>연락처</th><th>제출 시각</th></tr></thead><tbody id="submissionTableBody"></tbody></table></div></div>
       </section>
     </div>
   </section>
 </main>
-
 <script type="module" src="js/pages/admin-app.js"></script>
 </body>
 </html>

@@ -1,20 +1,26 @@
+
 import {
   getSession, signIn, signUp, signOut, loadAdminBundle,
   insertProgram, updateProgram, deleteProgram,
   insertForm, updateForm, deleteForm,
   insertQuestion, updateQuestion, deleteQuestion,
   insertOption, updateOption, deleteOption,
-  insertFaq, updateFaq, deleteFaq
+  insertFaq, updateFaq, deleteFaq,
+  isDemoMode, getModeBannerText, resetDemoData, exportDemoData, importDemoData
 } from '../services/admin-api.js';
 import { menuBoot, qs, qsa, escapeHtml, setStatus, fmtDate, slugify } from '../lib/utils.js';
 
 menuBoot();
+const banner = qs('#modeBanner');
+if (banner && isDemoMode()) { banner.textContent = getModeBannerText(); banner.classList.remove('hidden'); }
 
 const authView = qs('#authView');
 const dashboardView = qs('#dashboardView');
 const authStatus = qs('#authStatus');
 const statusNode = qs('#status');
 const sessionEmail = qs('#sessionEmail');
+const demoTools = qs('#demoTools');
+const importDemoInput = qs('#importDemoInput');
 let state = { programs: [], forms: [], questions: [], options: [], submissions: [], faqs: [] };
 let currentFormId = null;
 
@@ -51,17 +57,16 @@ function renderProgramTable() {
     <tr>
       <td><b>${escapeHtml(program.name)}</b></td>
       <td>${escapeHtml(program.slug || '-')}</td>
+      <td><label class="row"><input type="checkbox" data-program-published="${program.id}" ${program.is_published ? 'checked' : ''}> 공개</label></td>
       <td><button class="btn btn-danger small" data-delete-program="${program.id}">삭제</button></td>
     </tr>
-  `).join('') : '<tr><td colspan="3" class="muted">프로그램이 아직 없어</td></tr>';
+  `).join('') : '<tr><td colspan="4" class="muted">프로그램이 아직 없어</td></tr>';
   tbody.querySelectorAll('[data-delete-program]').forEach((button) => button.addEventListener('click', async () => {
     if (!confirm('프로그램을 삭제할까? 연결된 폼도 같이 지워져.')) return;
-    try {
-      await deleteProgram(button.dataset.deleteProgram);
-      await refreshAll('프로그램 삭제 완료');
-    } catch (error) {
-      setStatus(statusNode, error.message, 'err');
-    }
+    try { await deleteProgram(button.dataset.deleteProgram); await refreshAll('프로그램 삭제 완료'); } catch (error) { setStatus(statusNode, error.message, 'err'); }
+  }));
+  tbody.querySelectorAll('[data-program-published]').forEach((node) => node.addEventListener('change', async () => {
+    try { await updateProgram(node.dataset.programPublished, { is_published: node.checked }); await refreshAll('프로그램 공개 상태 변경'); } catch (error) { setStatus(statusNode, error.message, 'err'); }
   }));
 }
 
@@ -88,21 +93,11 @@ function renderFaqTable() {
     </tr>
   `).join('') : '<tr><td colspan="3" class="muted">FAQ가 아직 없어</td></tr>';
   tbody.querySelectorAll('[data-faq-published]').forEach((checkbox) => checkbox.addEventListener('change', async () => {
-    try {
-      await updateFaq(checkbox.dataset.faqPublished, { is_published: checkbox.checked });
-      await refreshAll('FAQ 게시 상태 변경');
-    } catch (error) {
-      setStatus(statusNode, error.message, 'err');
-    }
+    try { await updateFaq(checkbox.dataset.faqPublished, { is_published: checkbox.checked }); await refreshAll('FAQ 게시 상태 변경'); } catch (error) { setStatus(statusNode, error.message, 'err'); }
   }));
   tbody.querySelectorAll('[data-delete-faq]').forEach((button) => button.addEventListener('click', async () => {
     if (!confirm('FAQ를 삭제할까?')) return;
-    try {
-      await deleteFaq(button.dataset.deleteFaq);
-      await refreshAll('FAQ 삭제 완료');
-    } catch (error) {
-      setStatus(statusNode, error.message, 'err');
-    }
+    try { await deleteFaq(button.dataset.deleteFaq); await refreshAll('FAQ 삭제 완료'); } catch (error) { setStatus(statusNode, error.message, 'err'); }
   }));
 }
 
@@ -115,7 +110,7 @@ function renderFormList() {
       <div class="form-item ${currentFormId === form.id ? 'active' : ''}" data-select-form="${form.id}">
         <div style="font-weight:800">${escapeHtml(form.title)}</div>
         <div class="muted">${escapeHtml(program?.name || '-')}</div>
-        <div class="subtle">질문 ${form.questions.length}개</div>
+        <div class="subtle">질문 ${form.questions.length}개 · ${form.is_published ? '공개' : '비공개'}</div>
       </div>
     `;
   }).join('') : '<div class="empty">폼이 아직 없어</div>';
@@ -272,12 +267,7 @@ function bindBuilder(form) {
 }
 
 async function safeUpdate(fn, okMessage) {
-  try {
-    await fn();
-    await refreshAll(okMessage, false);
-  } catch (error) {
-    setStatus(statusNode, error.message, 'err');
-  }
+  try { await fn(); await refreshAll(okMessage, false); } catch (error) { setStatus(statusNode, error.message, 'err'); }
 }
 
 async function refreshAll(message = '새로고침 완료', resetSelection = false) {
@@ -302,7 +292,8 @@ async function bootSession() {
       authView.classList.add('hidden');
       dashboardView.classList.remove('hidden');
       sessionEmail.textContent = session.user.email;
-      await refreshAll('로그인 완료');
+      if (demoTools) demoTools.classList.toggle('hidden', !isDemoMode());
+      await refreshAll(isDemoMode() ? '데모 어드민 준비 완료' : '로그인 완료');
       return;
     }
     authView.classList.remove('hidden');
@@ -314,7 +305,7 @@ async function bootSession() {
 
 qs('#btnSignIn')?.addEventListener('click', async () => {
   try {
-    setStatus(authStatus, '로그인 중...', '');
+    setStatus(authStatus, isDemoMode() ? '데모 로그인 중...' : '로그인 중...', '');
     await signIn(qs('#authEmail').value.trim(), qs('#authPassword').value);
     await bootSession();
   } catch (error) {
@@ -324,45 +315,29 @@ qs('#btnSignIn')?.addEventListener('click', async () => {
 
 qs('#btnSignUp')?.addEventListener('click', async () => {
   try {
-    setStatus(authStatus, '회원가입 중...', '');
+    setStatus(authStatus, isDemoMode() ? '데모 계정 생성 중...' : '회원가입 중...', '');
     const email = qs('#authEmail').value.trim();
     const password = qs('#authPassword').value;
     const result = await signUp(email, password);
-    setStatus(authStatus, result.user ? '회원가입 완료. 바로 로그인되는 설정이면 이어서 대시보드가 열려.' : '회원가입 완료. 이메일 인증이 켜져 있으면 메일을 먼저 확인해줘.', 'ok');
+    setStatus(authStatus, result.user ? (isDemoMode() ? '데모 계정 생성 완료. 바로 대시보드로 들어갑니다.' : '회원가입 완료. 이메일 인증이 켜져 있으면 메일을 먼저 확인해줘.') : '완료', 'ok');
     await bootSession();
   } catch (error) {
     setStatus(authStatus, error.message, 'err');
   }
 });
 
-qs('#btnSignOut')?.addEventListener('click', async () => {
-  try { await signOut(); await bootSession(); } catch (error) { setStatus(statusNode, error.message, 'err'); }
-});
+qs('#btnSignOut')?.addEventListener('click', async () => { try { await signOut(); await bootSession(); } catch (error) { setStatus(statusNode, error.message, 'err'); } });
 qs('#btnRefresh')?.addEventListener('click', async () => { try { await refreshAll('수동 새로고침 완료'); } catch (error) { setStatus(statusNode, error.message, 'err'); } });
-
-qs('#programName')?.addEventListener('input', () => {
-  if (!qs('#programSlug').value.trim()) qs('#programSlug').value = slugify(qs('#programName').value);
-});
+qs('#programName')?.addEventListener('input', () => { if (!qs('#programSlug').value.trim()) qs('#programSlug').value = slugify(qs('#programName').value); });
 
 qs('#btnCreateProgram')?.addEventListener('click', async () => {
   try {
     const name = qs('#programName').value.trim();
     if (!name) throw new Error('프로그램명을 입력해줘.');
-    await insertProgram({
-      name,
-      slug: slugify(qs('#programSlug').value || name),
-      summary: qs('#programSummary').value.trim() || null,
-      description: qs('#programDescription').value.trim() || null,
-      is_published: true
-    });
-    qs('#programName').value = '';
-    qs('#programSlug').value = '';
-    qs('#programSummary').value = '';
-    qs('#programDescription').value = '';
+    await insertProgram({ name, slug: slugify(qs('#programSlug').value || name), summary: qs('#programSummary').value.trim() || null, description: qs('#programDescription').value.trim() || null, is_published: true });
+    qs('#programName').value = ''; qs('#programSlug').value = ''; qs('#programSummary').value = ''; qs('#programDescription').value = '';
     await refreshAll('프로그램 등록 완료');
-  } catch (error) {
-    setStatus(statusNode, error.message, 'err');
-  }
+  } catch (error) { setStatus(statusNode, error.message, 'err'); }
 });
 
 qs('#btnCreateForm')?.addEventListener('click', async () => {
@@ -371,23 +346,11 @@ qs('#btnCreateForm')?.addEventListener('click', async () => {
     const title = qs('#formTitle').value.trim();
     if (!programId) throw new Error('프로그램을 먼저 선택해줘.');
     if (!title) throw new Error('폼 제목을 입력해줘.');
-    const form = await insertForm({
-      program_id: programId,
-      title,
-      description: qs('#formDescription').value.trim() || null,
-      global_deadline_at: qs('#formDeadline').value || null,
-      max_responses: qs('#formCapacity').value ? Number(qs('#formCapacity').value) : null,
-      is_published: true
-    });
+    const form = await insertForm({ program_id: programId, title, description: qs('#formDescription').value.trim() || null, global_deadline_at: qs('#formDeadline').value || null, max_responses: qs('#formCapacity').value ? Number(qs('#formCapacity').value) : null, is_published: true });
     currentFormId = form.id;
-    qs('#formTitle').value = '';
-    qs('#formDescription').value = '';
-    qs('#formDeadline').value = '';
-    qs('#formCapacity').value = '';
+    qs('#formTitle').value = ''; qs('#formDescription').value = ''; qs('#formDeadline').value = ''; qs('#formCapacity').value = '';
     await refreshAll('신청 폼 생성 완료');
-  } catch (error) {
-    setStatus(statusNode, error.message, 'err');
-  }
+  } catch (error) { setStatus(statusNode, error.message, 'err'); }
 });
 
 qs('#btnCreateFaq')?.addEventListener('click', async () => {
@@ -396,11 +359,37 @@ qs('#btnCreateFaq')?.addEventListener('click', async () => {
     const answer = qs('#faqAnswer').value.trim();
     if (!question || !answer) throw new Error('FAQ 질문과 답변을 모두 입력해줘.');
     await insertFaq({ question, answer, is_published: true });
-    qs('#faqQuestion').value = '';
-    qs('#faqAnswer').value = '';
+    qs('#faqQuestion').value = ''; qs('#faqAnswer').value = '';
     await refreshAll('FAQ 추가 완료');
+  } catch (error) { setStatus(statusNode, error.message, 'err'); }
+});
+
+qs('#btnResetDemo')?.addEventListener('click', async () => {
+  if (!confirm('데모 데이터를 처음 상태로 되돌릴까?')) return;
+  resetDemoData();
+  await refreshAll('데모 데이터 초기화 완료', true);
+});
+
+qs('#btnExportDemo')?.addEventListener('click', () => {
+  const blob = new Blob([exportDemoData()], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'gyulgyul-demo-backup.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+qs('#btnImportDemo')?.addEventListener('click', () => importDemoInput?.click());
+importDemoInput?.addEventListener('change', async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    importDemoData(text);
+    await refreshAll('데모 데이터 가져오기 완료', true);
   } catch (error) {
-    setStatus(statusNode, error.message, 'err');
+    setStatus(statusNode, `가져오기 실패: ${error.message}`, 'err');
+  } finally {
+    e.target.value = '';
   }
 });
 

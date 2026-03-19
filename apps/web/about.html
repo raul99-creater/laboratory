@@ -1,67 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>귤귤 | 소개</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="favicon.svg" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body data-page="about">
-
-<header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-text">귤귤</span>
-    </a>
-    <nav class="site-nav">
-      <a href="programs.html" data-page="programs">프로그램</a>
-      <a href="participate.html" data-page="participate">참여하기</a>
-      <a href="about.html" data-page="about">소개</a>
-      <a href="support.html" data-page="support">안내</a>
-    </nav>
-    <div class="nav-actions">
-      <a class="btn btn-primary" href="participate.html">참여 페이지</a>
-    </div>
-    <button class="menu-toggle" type="button" aria-label="메뉴 열기">☰</button>
-  </div>
-</header>
-
-<main class="page-shell">
-  <section class="section">
-    <div class="container split-layout">
-      <div>
-        <span class="eyebrow">ABOUT</span>
-        <h2>왜 이 버전은 일부러 정적으로 시작했나</h2>
-        <p class="section-copy">처음부터 프레임워크, 서버, 배포, 챗봇까지 한 번에 올리면 초반에 막힐 지점이 너무 많다. 그래서 이 버전은 화면은 정적으로 두고, 실제 운영 핵심 데이터만 Supabase로 옮기는 출발점으로 설계했다.</p>
-        <ul class="list-plain">
-          <li>빌드 없는 구조라 처음 점검이 쉽다</li>
-          <li>web / admin 분리가 명확하다</li>
-          <li>나중에 Vite / Next.js 로 갈아타도 테이블 구조를 재사용하기 쉽다</li>
-        </ul>
-      </div>
-      <div class="image-frame section-side-frame tall"></div>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div>
-      <strong>귤귤</strong>
-      <p class="footer-note">Supabase 준비용 스타터 · web / admin 분리 구조</p>
-    </div>
-    <div class="footer-links">
-      <a href="programs.html">프로그램</a>
-      <a href="participate.html">참여하기</a>
-      <a href="about.html">소개</a>
-      <a href="support.html">안내</a>
-    </div>
-  </div>
-</footer>
-
-<script type="module" src="js/pages/common.js"></script>
-</body>
-</html>
+<html lang="ko"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>귤귤 | 소개</title><link rel="icon" href="favicon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="favicon.svg" /><link rel="stylesheet" href="styles.css" /></head>
+<body data-page="about"><header class="site-header"><div class="container nav-wrap"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">귤귤</span></a><nav class="site-nav"><a href="programs.html" data-page="programs">프로그램</a><a href="participate.html" data-page="participate">참여하기</a><a href="about.html" data-page="about">소개</a><a href="support.html" data-page="support">안내</a></nav><div class="nav-actions"><a class="btn btn-primary" href="participate.html">참여 페이지</a></div><button class="menu-toggle" type="button" aria-label="메뉴 열기">☰</button></div></header>
+<div id="modeBanner" class="mode-banner hidden"></div>
+<main class="page-shell"><section class="section"><div class="container split-layout"><div><span class="eyebrow">ABOUT</span><h2>왜 이번 버전은<br />UI를 먼저 볼 수 있게 바꿨나</h2><p class="section-copy">처음부터 키를 넣고 권한을 맞추고 RLS까지 건드리면 초보자는 화면을 보기 전에 지친다. 그래서 이번 패키지는 아무 설정 없이도 데모 모드로 화면과 기능을 전부 확인할 수 있게 바꿨다. 그 뒤에 Supabase를 붙이면 된다.</p><ul class="list-plain"><li>web / admin 둘 다 실제 UI가 바로 열린다</li><li>폼 생성, 질문 편집, 신청 제출까지 데모 모드에서 연습 가능</li><li>Supabase 연결 후에도 폴더 구조는 그대로 유지된다</li></ul></div><div class="image-frame section-side-frame tall"></div></div></section></main>
+<footer class="site-footer"><div class="container footer-inner"><div><strong>귤귤</strong><p class="footer-note">Supabase UI 스타터 · 데모 모드 포함</p></div><div class="footer-links"><a href="programs.html">프로그램</a><a href="participate.html">참여하기</a><a href="about.html">소개</a><a href="support.html">안내</a></div></div></footer>
+<script type="module" src="js/pages/common.js"></script></body></html>

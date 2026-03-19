@@ -1,99 +1,168 @@
-# 귤귤 Supabase 준비 순서 (초보자용)
+# 귤귤 Supabase UI 스타터 · 초보자용 세팅 순서
 
-## 0) 이 프로젝트가 어떻게 나뉘는지 먼저 이해하기
+## 0. 이번 버전부터 달라진 점
+이전 스타터처럼 문서만 있는 게 아니라, 이번 버전은 **아무 설정 없이도 화면이 바로 열리고** 데모 데이터로 어드민/이용자 기능이 실제로 돌아간다.
+
+즉 순서는 이렇다.
+
+1. 먼저 브라우저에서 UI를 본다.
+2. 그 다음 Supabase를 만든다.
+3. 마지막에 config.js를 채운다.
+
+---
+
+## 1. 압축을 푼 뒤 어디부터 볼까
+폴더는 이렇게 나뉜다.
+
 - `apps/web` : 이용자용 사이트
-- `apps/admin` : 관리자용 사이트
-- 둘 다 정적 HTML이라서 GitHub에 올리기 쉽다.
-- 데이터는 브라우저 저장이 아니라 **Supabase DB** 에 저장된다.
+- `apps/admin` : 관리자용 어드민
+- `supabase/schema.sql` : 테이블/정책/RPC
+- `supabase/seed.sql` : 샘플 데이터
 
-## 1) Supabase 프로젝트 만들기
+### 바로 확인해보기
+- `apps/web/index.html` 더블클릭
+- `apps/admin/index.html` 더블클릭
+
+둘 다 **데모 모드**로 바로 열린다.
+
+---
+
+## 2. 데모 모드에서 먼저 확인할 것
+### web 에서
+- 홈 화면이 뜨는지
+- 프로그램 카드가 보이는지
+- 참여하기 페이지에서 폼이 열리는지
+- 제출 후 Google Calendar / ICS 버튼이 뜨는지
+
+### admin 에서
+- 이메일/비밀번호 아무거나 넣고 로그인 되는지
+- 프로그램 추가가 되는지
+- 폼 생성이 되는지
+- 질문/선택지 편집이 되는지
+- 최근 제출이 보이는지
+
+이 단계는 **Supabase 없이도** 된다.
+
+---
+
+## 3. Supabase 프로젝트 만들기
 1. Supabase 로그인
-2. **New project** 클릭
+2. `New project` 클릭
 3. 프로젝트 이름 입력
-4. DB 비밀번호 입력 후 저장
-5. 프로젝트가 준비될 때까지 기다린다
+4. DB 비밀번호 설정
+5. 지역 선택 후 생성
 
-## 2) SQL 붙여넣기
-1. 좌측 메뉴 **SQL Editor** 로 이동
-2. `supabase/schema.sql` 파일 전체 복사 후 실행
-3. 이어서 `supabase/seed.sql` 파일도 실행
+프로젝트 생성이 끝나면 `Project URL`과 `Publishable key`를 쓸 수 있다.
 
-## 3) 관리자 이메일 바꾸기
-`schema.sql` 안에 기본 예시 이메일이 들어 있다.
+---
+
+## 4. SQL 넣기
+Supabase 왼쪽 메뉴에서 `SQL Editor`로 간다.
+
+### 4-1. schema.sql 실행
+- `supabase/schema.sql` 파일 전체 복사
+- SQL Editor에 붙여넣기
+- 실행
+
+### 4-2. seed.sql 실행
+- `supabase/seed.sql` 파일 전체 복사
+- SQL Editor에 붙여넣기
+- 실행
+
+이렇게 하면 기본 샘플 데이터가 들어간다.
+
+---
+
+## 5. 관리자 이메일 등록
+`schema.sql` 안에는 `public.admin_emails` 테이블이 있다.
+
+실제 네 이메일을 넣어야 어드민 권한이 열린다.
+
+예시 SQL:
 
 ```sql
 insert into public.admin_emails(email, note)
-values ('admin@example.com', '첫 관리자 이메일')
-on conflict (email) do nothing;
+values ('네이메일@example.com', '실제 관리자');
 ```
 
-이 부분을 네 실제 관리자 이메일로 바꿔서 다시 실행하거나,
-대시보드 SQL Editor에서 아래 한 줄만 따로 실행하면 된다.
+---
 
-```sql
-insert into public.admin_emails(email, note)
-values ('네이메일@example.com', '실사용 관리자');
-```
+## 6. config.js 채우기
+두 파일을 수정한다.
 
-## 4) URL / 키 찾기
-Supabase 프로젝트에서 다음 2개가 필요하다.
-- Project URL
-- Publishable Key
-
-이 값은 API Keys 화면에서 찾는다.
-
-## 5) config.js 입력
-다음 2개 파일을 열어 값을 넣는다.
 - `apps/web/js/config.js`
 - `apps/admin/js/config.js`
 
+기본값은 이렇게 들어 있다.
+
 ```js
-export const SUPABASE_URL = 'https://프로젝트ref.supabase.co';
-export const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_xxx';
+export const APP_NAME = '귤귤';
+export const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co';
+export const SUPABASE_PUBLISHABLE_KEY = 'YOUR_SUPABASE_PUBLISHABLE_KEY';
+export const TIMEZONE = 'Asia/Seoul';
 ```
 
-## 6) 관리자 회원가입
-1. `apps/admin/index.html` 을 로컬 서버로 연다
-2. 이메일 / 비밀번호 입력
-3. **회원가입** 또는 **로그인**
-4. 로그인 후 프로그램/폼/FAQ를 등록한다
+여기서 아래 두 개만 바꾸면 된다.
+- `SUPABASE_URL`
+- `SUPABASE_PUBLISHABLE_KEY`
 
-## 7) 로컬에서 테스트하는 방법
-파일을 더블클릭해서 열지 말고, 폴더 기준으로 간단한 서버를 띄운다.
+### 중요
+- `Publishable Key`만 넣는다.
+- `service_role`이나 secret key는 넣지 않는다.
 
-### Python이 있으면
-```bash
-cd apps/web
-python -m http.server 8080
-```
-다른 터미널에서는
-```bash
-cd apps/admin
-python -m http.server 8081
-```
+---
 
-브라우저에서
-- `http://localhost:8080`
-- `http://localhost:8081`
-열면 된다.
+## 7. admin에서 실제 로그인 테스트
+1. `apps/admin/index.html` 열기
+2. 회원가입 또는 로그인
+3. 아까 `admin_emails`에 넣은 이메일 사용
+4. 대시보드가 열리면 성공
 
-## 8) GitHub 올리기
-1. 새 저장소 생성
-2. 이 프로젝트 파일 전체 업로드
-3. 커밋/푸시
+---
 
-## 9) Vercel 배포
-이 저장소 하나로 프로젝트 2개를 만든다.
-- Project 1 Root Directory: `apps/web`
-- Project 2 Root Directory: `apps/admin`
+## 8. web에서 실데이터 확인
+1. `apps/web/index.html` 열기
+2. 데모 배너가 사라졌는지 확인
+3. 프로그램 목록이 seed 데이터와 같은지 확인
+4. 참여하기 페이지에서 제출 테스트
 
-각 프로젝트에 똑같이 환경변수를 넣을 수도 있지만,
-이 스타터는 먼저 따라가기 쉽게 `config.js` 직접 입력 방식으로 만들어 둔 상태다.
+---
 
-## 10) 다음 단계 추천
-지금 단계가 안정되면 그다음에 붙이면 좋은 것:
+## 9. GitHub에 올릴 때
+### 저장소 업로드
+압축 푼 폴더 전체를 GitHub 저장소에 올린다.
+
+### 정적 배포
+- web만 먼저 올릴 거면 `apps/web` 기준으로 GitHub Pages 또는 Vercel
+- admin은 `apps/admin` 기준으로 별도 프로젝트
+
+### 추천
+- GitHub 저장소는 1개
+- Vercel 프로젝트는 2개
+  - 프로젝트 1: `apps/web`
+  - 프로젝트 2: `apps/admin`
+
+---
+
+## 10. 막히기 쉬운 포인트
+### 화면은 뜨는데 실데이터가 안 보임
+- config.js 값 확인
+- schema.sql 실행 여부 확인
+- seed.sql 실행 여부 확인
+
+### admin 로그인은 되는데 권한이 없음
+- `public.admin_emails`에 네 이메일이 들어갔는지 확인
+- 로그인 이메일과 등록 이메일이 같은지 확인
+
+### 데모 배너가 계속 보임
+- config.js placeholder 문자열이 그대로 남아 있는지 확인
+
+---
+
+## 11. 다음 확장
+이 구조 위에 바로 붙이기 좋은 기능
 - 카카오 로그인
-- 카카오톡 채널 챗봇용 Edge Function
-- 신청자 개인 조회 페이지
-- 이미지 업로드용 Storage
-- 관리자/스태프 권한 분리
+- Supabase Storage 이미지 업로드
+- 카카오 일정응답봇(Edge Functions)
+- 개인 신청내역 조회
+- 운영자 공지/배너 관리
