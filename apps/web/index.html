@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>귤귤 | Supabase 준비용 스타터</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">귤귤</span>
+    </a>
+    <nav class="site-nav">
+      <a href="programs.html" data-page="programs">프로그램</a>
+      <a href="participate.html" data-page="participate">참여하기</a>
+      <a href="about.html" data-page="about">소개</a>
+      <a href="support.html" data-page="support">안내</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary" href="participate.html">참여 페이지</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-label="메뉴 열기">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">GYULGYUL + SUPABASE</span>
+        <h1>정적 사이트에서 시작해서<br />Supabase로 데이터만 먼저<br />안정적으로 올리는 준비 버전</h1>
+        <p class="hero-copy">지금 단계는 초보자가 따라가기 쉬운 구조가 핵심이다. web / admin 을 분리하고, 프로그램·폼·제출 데이터는 Supabase로 이동했다.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="programs.html">오픈된 프로그램 보기</a>
+          <a class="btn btn-secondary" href="participate.html">바로 신청 테스트</a>
+        </div>
+        <div class="hero-stat-grid">
+          <div class="stat"><div class="k">HOSTING</div><div class="v">GitHub · Vercel</div></div>
+          <div class="stat"><div class="k">DATABASE</div><div class="v">Supabase</div></div>
+          <div class="stat"><div class="k">MODE</div><div class="v">빌드 없는 정적</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="image-frame hero-main-frame"></div>
+        <div class="hero-floating-row">
+          <div class="image-frame floating-frame small"></div>
+          <div class="image-frame floating-frame"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft-bg">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">LIVE DATA</span>
+          <h2>Supabase에 올라온 공개 프로그램</h2>
+        </div>
+        <a class="text-link" href="programs.html">전체 보기 →</a>
+      </div>
+      <div id="featuredPrograms" class="program-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split-layout">
+      <div>
+        <span class="eyebrow">FLOW</span>
+        <h2>운영자는 admin에서 등록하고,<br />이용자는 web에서 바로 신청</h2>
+        <p class="section-copy">이 스타터는 나중에 카카오 로그인, 일정봇, 캘린더 자동화로 확장하기 쉽게 프로그램 / 폼 / 질문 / 선택지 / 제출 구조를 먼저 DB에 정리해 둔다.</p>
+        <div class="hero-mini-grid">
+          <article class="mini-panel"><strong>01</strong><span>프로그램 등록</span></article>
+          <article class="mini-panel"><strong>02</strong><span>질문/선택지 구성</span></article>
+          <article class="mini-panel"><strong>03</strong><span>제출 + 일정 저장</span></article>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="section-title">시작 체크리스트</div>
+        <ul class="list-plain">
+          <li>Supabase 프로젝트 생성</li>
+          <li>schema.sql / seed.sql 실행</li>
+          <li>config.js 에 URL / Publishable Key 입력</li>
+          <li>admin 이메일 화이트리스트 등록</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft-bg no-top-gap">
+    <div class="container split-panel">
+      <div>
+        <span class="eyebrow">FAQ</span>
+        <h2>자주 묻는 질문</h2>
+        <p class="muted">이 영역도 Supabase의 FAQ 테이블에서 읽어오도록 구성했다.</p>
+      </div>
+      <div id="faqList" class="faq-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>귤귤</strong>
+      <p class="footer-note">Supabase 준비용 스타터 · web / admin 분리 구조</p>
+    </div>
+    <div class="footer-links">
+      <a href="programs.html">프로그램</a>
+      <a href="participate.html">참여하기</a>
+      <a href="about.html">소개</a>
+      <a href="support.html">안내</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="js/pages/home.js"></script>
+</body>
+</html>
